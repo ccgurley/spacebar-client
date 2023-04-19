@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ template "name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+  name: {{ template "name" . }}
+  {{- if .Values.deploymentAnnotations }}
+  annotations:
+    {{- range $key, $value := .Values.deploymentAnnotations }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+  {{- end }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ template "name" . }}
+      release: {{ .Release.Name }}
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: {{ template "name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - env:
+            - name: SERVER_API
+              value: {{ .Values.environment.server_api | quote }}
+            - name: SERVER_CDN
+              value: {{ .Values.environment.server_cdn | quote }}
+            - name: SERVER_GATEWAY
+              value: {{ .Values.environment.server_gateway | quote }}
+          image: {{ .Values.image.repository }}
+          name: spacebar-client
+          ports:
+            - containerPort: {{ .Values.service.ports.targetPort }}
+          resources: {}
+      restartPolicy: Always
+status: {}

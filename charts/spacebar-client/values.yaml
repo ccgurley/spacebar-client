@@ -1,0 +1,30 @@
+image:
+  repository: ccgurley/spacebar-client
+  tag: latest
+  pullPolicy: Always
+
+environment:
+  server_api:  https://staging.spacebar.com/api
+  server_cdn:  https://cdn.staging.spacebar.com
+  server_gateway:  wss://gateway.staging.spacebar.com
+
+service:
+  type: ClusterIP
+  ports:
+    servicePort: 80
+    targetPort: 80
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+    certmanager.k8s.io/cluster-issuer: your-certmanager
+  path: /
+  hosts:
+    - spacebar.domain.tld
+# tls:
+#   - secretName: crt-peertube.domain.tld
+#     hosts:
+#       - spacebar.domain.tld
+

@@ -1,0 +1,14 @@
+apiVersion: v1
+description: Fosscord Client
+name: spacebar-client
+appVersion: latest
+version: 0.0.1
+keywords:
+  - spacebar
+home: https://https://docs.spacebar.com
+icon: https://docs.spacebar.com/assets/logo.svg
+sources:
+  - https://hub.docker.com/r/ccgurley/spacebar-client
+maintainers:
+  - name: Christopher Gurley
+    email: ccgurley@ncsu.edu
